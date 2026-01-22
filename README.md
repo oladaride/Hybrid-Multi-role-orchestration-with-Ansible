@@ -1,6 +1,9 @@
 # Hybrid-Multi-role-orchestration-with-Ansible
 This repository contains a full Infrastructure as Code (IaC) and Configuration Management pipeline. It automates the provisioning of an AWS EC2 instance using Terraform and configures a Hybrid Environment (AWS + Local VM) with Ansible.
 
+# Why:
+I chose this hybrid approach to simulate a corporate environment where some resources are in the public cloud (AWS) and some are hosted in private data centers (Local VM).
+
 🛠️ Phase 1: Provisioning (Terraform)
 The AWS infrastructure was provisioned using Terraform to ensure a reproducible "Hardware" layer.
 Provider: AWS
