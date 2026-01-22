@@ -1,0 +1,59 @@
+---
+
+- name: Install Docker and MySQL on AWS
+  hosts: docker-vm
+  become: yes
+  tasks:
+    - name: Install Docker and MariaDB (MySQL)
+      dnf:
+        name: 
+          - docker
+          - mariadb105-server
+        state: present
+
+    - name: Start and Enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Start and Enable MariaDB service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+      notify: Restart Docker  # Optional: ensures group change reflects
+
+  handlers:
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
+# PLAY 2: Local Ubuntu VM
+- name: Install Nginx on Local VM
+  hosts: myvm
+  become: yes
+  tasks:
+    - name: Update apt cache and install Nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Docker
+      service:
+        name: docker
+        state: restarted
